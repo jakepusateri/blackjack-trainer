@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d3b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BJ Trainer">
+<title>Blackjack Trainer</title>
+<link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <h1>Blackjack Trainer</h1>
+  <div class="rules">
+    <select id="preset" aria-label="Table rules"></select>
+    <select id="payout" aria-label="Blackjack payout">
+      <option value="1.5">BJ pays 3:2</option>
+      <option value="1.2">BJ pays 6:5</option>
+    </select>
+  </div>
+  <p class="where" id="where"></p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button data-tab="drill" class="on">Strategy</button>
+  <button data-tab="count">Count</button>
+  <button data-tab="tc">True count</button>
+  <button data-tab="table">Table</button>
+  <button data-tab="chart">Chart</button>
+</nav>
+
+<main>
+<!-- Strategy drill -->
+<section id="tab-drill" class="tab on">
+  <div class="row opts">
+    <select id="drMode">
+      <option value="tough">Tough spots (soft, pairs, 9-16)</option>
+      <option value="all">All hands (as dealt)</option>
+    </select>
+    <label class="chk"><input type="checkbox" id="drDev"> Count plays (I18)</label>
+  </div>
+  <div class="felt">
+    <div class="lbl">Dealer <span id="drTC" class="tcbadge"></span></div>
+    <div class="cards" id="drDealer"></div>
+    <div class="lbl">You <span id="drLabel" class="muted"></span></div>
+    <div class="cards" id="drPlayer"></div>
+  </div>
+  <div class="actions" id="drActions">
+    <button data-a="H" class="a-H">Hit</button>
+    <button data-a="S" class="a-S">Stand</button>
+    <button data-a="D" class="a-D">Double</button>
+    <button data-a="P" class="a-P">Split</button>
+    <button data-a="R" class="a-R">Surrender</button>
+  </div>
+  <div id="drFeedback" class="feedback"></div>
+  <div id="drRow"></div>
+  <button id="drNext" class="primary hidden">Next hand</button>
+  <div class="stats" id="drStats"></div>
+  <div id="drMissed"></div>
+  <button id="drReset" class="link">Reset strategy stats</button>
+</section>
+
+<!-- Count drill -->
+<section id="tab-count" class="tab">
+  <div class="seg">
+    <button data-cmode="flash" class="on">Flash cards</button>
+    <button data-cmode="deck">Deck countdown</button>
+  </div>
+  <div id="cFlashOpts" class="row opts">
+    <label>Cards <select id="cfN"><option>10</option><option selected>20</option><option>30</option><option value="52">52</option></select></label>
+    <label>Speed <select id="cfSpeed">
+      <option value="1200">Slow</option><option value="800" selected>Medium</option>
+      <option value="550">Fast</option><option value="350">Casino</option><option value="250">Pro</option></select></label>
+    <label>At once <select id="cfPer"><option>1</option><option>2</option><option>3</option></select></label>
+  </div>
+  <p id="cDeckHelp" class="muted hidden">Flip through a full deck as fast as you can while keeping the Hi-Lo count. One card is secretly removed, so the count won't end at 0. Name the final count. Target: under 25 seconds with no mistakes.</p>
+  <div class="felt stage" id="cStage"><div class="muted">2-6 = +1 · 7-9 = 0 · 10-A = −1</div></div>
+  <div id="cTimer" class="timer hidden"></div>
+  <button id="cStart" class="primary">Start</button>
+  <button id="cNextCard" class="primary big hidden">Next card</button>
+  <div id="cAsk" class="hidden">
+    <div class="lbl">Running count?</div>
+    <div class="stepper" id="cStep"></div>
+    <button id="cSubmit" class="primary">Check</button>
+  </div>
+  <div id="cResult" class="feedback"></div>
+  <div id="cStrip" class="strip"></div>
+  <div class="stats" id="cStats"></div>
+</section>
+
+<!-- True count drill -->
+<section id="tab-tc" class="tab">
+  <div class="felt">
+    <div class="tcq">
+      <div><div class="lbl">Running count</div><div class="bignum" id="tqRC"></div></div>
+      <div><div class="lbl">Discard tray</div><div class="tray"><div id="tqTray"></div></div><div class="muted small" id="tqTrayLbl"></div></div>
+    </div>
+    <div class="muted" id="tqLeft"></div>
+  </div>
+  <div class="lbl">True count?</div>
+  <div class="stepper" id="tqStep"></div>
+  <button id="tqSubmit" class="primary">Check</button>
+  <div id="tqResult" class="feedback"></div>
+  <button id="tqNext" class="primary hidden">Next</button>
+  <div class="stats" id="tqStats"></div>
+</section>
+
+<!-- Table sim -->
+<section id="tab-table" class="tab">
+  <div class="stats" id="tStats"></div>
+  <div class="row opts">
+    <label class="chk"><input type="checkbox" id="tCounting"> Counting mode</label>
+    <label class="chk"><input type="checkbox" id="tShow"> Show count</label>
+    <label>Quiz count <select id="tQuiz"><option value="0">Off</option><option value="3">Every 3 hands</option><option value="5" selected>Every 5 hands</option><option value="10">Every 10 hands</option></select></label>
+  </div>
+  <p class="muted small">Counting mode grades your bet against the 1-8 ramp, applies the I18 index plays, and tells you when to take insurance. Without it, play is graded against basic strategy.</p>
+  <div id="tCount" class="countpanel hidden"></div>
+  <div class="felt table">
+    <div class="lbl">Dealer <span id="tDTotal" class="muted"></span></div>
+    <div class="cards" id="tDealer"></div>
+    <div id="tHands" class="hands"></div>
+  </div>
+  <div id="tMsg" class="feedback"></div>
+  <div id="tQuizBox" class="hidden quizbox">
+    <div class="lbl">Quiz: what's the running count?</div>
+    <div class="stepper" id="tqzStep"></div>
+    <button id="tqzSubmit" class="primary">Check</button>
+  </div>
+  <div class="actions" id="tActions">
+    <button data-a="H" class="a-H">Hit</button>
+    <button data-a="S" class="a-S">Stand</button>
+    <button data-a="D" class="a-D">Double</button>
+    <button data-a="P" class="a-P">Split</button>
+    <button data-a="R" class="a-R">Surrender</button>
+  </div>
+  <div class="actions hidden" id="tIns">
+    <button data-ins="1">Take insurance</button>
+    <button data-ins="0">No insurance</button>
+  </div>
+  <div class="betrow" id="tBetRow">
+    <label>Unit <select id="tUnit"><option>10</option><option selected>25</option><option>50</option><option>100</option></select></label>
+    <div><div class="lbl small">Bet (units)</div><div class="stepper" id="tBetStep"></div></div>
+    <button id="tDeal" class="primary big">Deal</button>
+  </div>
+  <div id="tMistakes"></div>
+  <button id="tReset" class="link">Reset table (new shoe, bankroll $5,000)</button>
+</section>
+
+<!-- Chart -->
+<section id="tab-chart" class="tab">
+  <p class="muted small" id="chRules"></p>
+  <div id="chart"></div>
+</section>
+</main>
+<footer><span id="offline" class="muted small"></span> · <a class="muted small" href="https://app.devin.ai/sessions/f583151f6a0e436f9324ae86d1882536" target="_blank" rel="noopener">Request changes</a></footer>
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
