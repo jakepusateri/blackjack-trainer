@@ -30,9 +30,10 @@
 <nav class="tabs" role="tablist">
   <button data-tab="drill" class="on">Strategy</button>
   <button data-tab="count">Count</button>
-  <button data-tab="tc">True count</button>
+  <button data-tab="tc">True ct</button>
   <button data-tab="table">Table</button>
   <button data-tab="chart">Chart</button>
+  <button data-tab="how">Basics</button>
 </nav>
 
 <main>
@@ -156,6 +157,41 @@
 <section id="tab-chart" class="tab">
   <p class="muted small" id="chRules"></p>
   <div id="chart"></div>
+</section>
+
+<!-- How to play -->
+<section id="tab-how" class="tab howto">
+  <h2>The goal</h2>
+  <p>Get closer to 21 than the dealer without going over (busting). Cards 2–10 count their number, J Q K count 10, an ace counts 1 or 11. A hand with an ace counted as 11 is <b>soft</b> (A-6 is soft 17): it can't bust on the next card.</p>
+  <h2>A round</h2>
+  <ol>
+    <li>Put chips in the betting circle. Everyone gets two cards face up; the dealer shows one card (the <b>upcard</b>) and hides one.</li>
+    <li>An ace and a 10-value card on your first two cards is <b>blackjack</b>: paid 3:2 ($10 wins $15), unless the dealer also has it (a tie, called a <b>push</b>).</li>
+    <li>You play your hand, then the dealer flips the hidden card and must hit until 17 or more. If the dealer busts, every hand still in wins.</li>
+    <li>Higher total wins 1:1; a tie is a push and you keep your bet. If you bust you lose, even if the dealer busts too.</li>
+  </ol>
+  <h2>Your choices</h2>
+  <table class="list">
+    <tr><th>Move</th><th>What it does</th><th>Signal</th></tr>
+    <tr><td><b>Hit</b></td><td>Take another card.</td><td>Tap the felt</td></tr>
+    <tr><td><b>Stand</b></td><td>Keep your total.</td><td>Wave your hand flat over the cards</td></tr>
+    <tr><td><b>Double</b></td><td>First two cards only. Add an equal bet, get exactly one card, then stand.</td><td>Second bet beside the first, hold up one finger</td></tr>
+    <tr><td><b>Split</b></td><td>Two cards of the same rank: add an equal bet and play them as two hands.</td><td>Second bet beside the first, make a V with two fingers</td></tr>
+    <tr><td><b>Surrender</b></td><td>First two cards only. Give up and get half your bet back.</td><td>Say “surrender”</td></tr>
+    <tr><td><b>Insurance</b></td><td>When the dealer shows an ace, a side bet of half your bet that pays 2:1 if the dealer has blackjack.</td><td>Skip it unless you count</td></tr>
+  </table>
+  <p class="small muted">Split aces get one card each, and a 10 on one counts as 21, not blackjack. <b>DAS</b> means you may double after splitting. <b>S17/H17</b>: dealer stands/hits on soft 17. 6:5 tables pay $12 on a $10 blackjack instead of $15: avoid them.</p>
+  <h2>At the table</h2>
+  <ul>
+    <li>Drop cash on the felt between hands and say “change, please”. Don't hand it to the dealer; they can't take it from your hand.</li>
+    <li>Read the sign for the minimum and the rules before you sit. Many shoes are “no mid-shoe entry”: wait for the shuffle.</li>
+    <li>In a shoe game the cards are dealt face up: don't touch them. Hand signals are required, because the cameras record them.</li>
+    <li>Leave your bet alone once cards are coming out. Stack chips with the biggest at the bottom.</li>
+    <li>Tipping is optional: a chip for the dealer now and then, or a small bet placed for them in front of yours.</li>
+    <li>When you leave, the dealer colors you up: trades your small chips for bigger ones.</li>
+  </ul>
+  <h2>Using this trainer</h2>
+  <p>Learn the <b>Strategy</b> drill until you're above 95%, then play the <b>Table</b>. Count drills are for later. The <b>Chart</b> tab has the full strategy for the rules picked at the top.</p>
 </section>
 </main>
 <footer><span id="offline" class="muted small"></span> · <a class="muted small" href="https://app.devin.ai/sessions/f583151f6a0e436f9324ae86d1882536" target="_blank" rel="noopener">Request changes</a></footer>
